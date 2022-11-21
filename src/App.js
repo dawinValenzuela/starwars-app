@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const [personajes, setPersonajes] = useState([]);
+
+  useEffect(() => {
+    // fetch('https://swapi.dev/api/people')
+    //   .then((response) => response.json())
+    //   .then((data) => setPersonajes(data.results));
+    const obtenerPersonajes = async () => {
+      const response = await fetch('https://swapi.dev/api/people');
+      const data = await response.json();
+
+      setPersonajes(data.results);
+    };
+
+    obtenerPersonajes();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Personajes de Startawrs</h1>
+      <ul>
+        {personajes.map((personaje, key) => {
+          return <li key={key}>{personaje.name}</li>;
+        })}
+      </ul>
     </div>
   );
 }
